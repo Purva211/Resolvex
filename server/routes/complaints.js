@@ -1,0 +1,13 @@
+const router = require('express').Router();
+const c = require('../controllers/complaintController');
+const { protect, allow } = require('../middleware/auth');
+router.use(protect);
+router.get('/dashboard', c.dashboard);
+router.post('/check-duplicates', allow('customer'), c.checkDuplicates);
+router.post('/', allow('customer'), c.create);
+router.get('/', c.list);
+router.get('/:id', c.getOne);
+router.put('/:id/assign', allow('admin'), c.assign);
+router.put('/:id/status', allow('admin','agent','customer'), c.status);
+router.post('/:id/comments', c.comment);
+module.exports = router;
